@@ -21,12 +21,17 @@ The admin console (`/admin`) is a separate, auth-protected section of the same N
 
 ## Screenshots
 
-Screenshots are planned at the following paths. They do not yet exist in this repository and must be captured from the live site:
+![Homepage](docs/screenshots/home.png)
+*Homepage hero and activity cards showcasing Tone River rafting and canyoning tours.*
 
-- `docs/screenshots/home.png` — Homepage hero and activity cards
-- `docs/screenshots/booking-flow.png` — Multi-step booking wizard
-- `docs/screenshots/admin-dashboard.png` — Admin dashboard with revenue chart
-- `docs/screenshots/raft-allocation.png` — Today's manifest / booking list
+![Multi-Step Booking Wizard](docs/screenshots/booking-flow.png)
+*Multi-step booking wizard with dynamic date/slot selection and participant age validation.*
+
+![Admin Dashboard](docs/screenshots/admin-dashboard.png)
+*Admin operations dashboard featuring real-time revenue analytics, KPIs, and booking summaries.*
+
+![Today's Booking Manifest](docs/screenshots/raft-allocation.png)
+*Admin booking manifest table displaying daily tour schedules, slot capacity, and participant details.*
 
 ---
 
@@ -157,7 +162,7 @@ The `/admin` panel is not affected by either variable.
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/zetroxy/rafting-canyoning-site.git
+git clone https://github.com/zetroxyyy/rafting-canyoning-site.git
 cd rafting-canyoning-site
 
 # 2. Install dependencies
@@ -195,6 +200,7 @@ See [`.env.example`](./.env.example) for the complete list with comments. Requir
 | **LINE notifications** | `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_ADMIN_USER_ID` |
 | **WhatsApp notifications** | `WHATSAPP_API_KEY`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ADMIN_PHONE` |
 | **Google Places** | `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID`, `GOOGLE_REVIEW_URL` |
+| **Product IDs** | `NEXT_PUBLIC_RAFTING_PRODUCT_ID`, `NEXT_PUBLIC_CANYONING_PRODUCT_ID` |
 | **App** | `NEXT_PUBLIC_APP_URL` |
 | **Kill switches** | `NEXT_PUBLIC_GRAND_OPENING_SOON`, `GRAND_OPENING_SOON` |
 | **Cron** | `CRON_SECRET` |
