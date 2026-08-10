@@ -1,0 +1,642 @@
+// Dream Adventure - Prisma Schema v3
+// Supabase PostgreSQL | Prisma 7
+// DATABASE_URL = runtime pooler (pgbouncer) | DIRECT_URL = migrations
+
+generator client {
+  provider       = "prisma-client-js"
+  engineType     = "library"
+  binaryTargets  = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum ActivityType {
+  RAFTING
+  CANYONING
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CASH_DUE
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
+
+// PaymentStatus: simplified to two canonical states for admin dropdown control.
+// PAID    — payment received (cash, bank transfer, card terminal)
+// PENDING — awaiting payment
+enum PaymentStatus {
+  PAID
+  PENDING
+}
+
+enum ParticipantType {
+  ADULT
+  CHILD
+}
+
+enum PromoType {
+  PERCENT
+  FIXED
+}
+
+enum PromoCategory {
+  EARLY_BIRD
+  FAMILY
+  GROUP
+  REFERRAL
+  SEASONAL
+}
+
+enum SlotStatus {
+  OPEN
+  BLOCKED
+  SOLD_OUT
+  SPECIAL
+  CLOSED
+}
+
+enum SlotCondition {
+  OPTIMAL
+  HIGH_WATER
+  CANCELLED_WEATHER
+}
+
+enum DiscountType {
+  FLAT
+  PERCENTAGE
+}
+
+enum BookingSource {
+  WEB
+  PHONE
+  MANUAL
+}
+
+enum AuditAction {
+  BOOKING_CREATED
+  BOOKING_CONFIRMED
+  BOOKING_STATUS_CHANGED
+  PAYMENT_STATUS_CHANGED
+  BOOKING_CANCELLED
+  BOOKING_COMPLETED
+  SLOT_BLOCKED
+  SLOT_UNBLOCKED
+  SLOT_CAPACITY_CHANGED
+  SLOT_UPDATED
+  PROMO_CREATED
+  PROMO_DEACTIVATED
+  REFUND_ISSUED
+  BOOKING_NOTE_UPDATED
+  PARTICIPANT_UPDATED
+  ADMIN_LOGIN
+  CONTACT_REPLIED
+  BOOKING_DUPLICATED
+  BOOKING_RESCHEDULED
+  CANCELLATION_REQUESTED
+  RESCHEDULE_REQUESTED
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  PDF_GENERATED
+  REMINDER_SENT
+  CRON_RUN
+}
+
+enum NotificationChannel {
+  EMAIL
+}
+
+enum NotificationEvent {
+  BOOKING_CONFIRMED
+  BOOKING_CANCELLED
+  PAYMENT_SUCCESS
+  REMINDER_24H
+  REFUND_ISSUED
+  NEW_INQUIRY
+  SLOT_BLOCKED
+  WEATHER_ALERT
+  CANCELLATION_REQUESTED
+  RESCHEDULE_REQUESTED
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  POST_TRIP_2D
+}
+
+enum BookingRequestType {
+  CANCELLATION
+  RESCHEDULE
+}
+
+enum BookingRequestStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  FINALIZED
+}
+
+// ─── Products ─────────────────────────────────────────────────────────────────
+
+model Product {
+  id                String             @id @default(cuid())
+  slug              String             @unique
+  activityType      ActivityType
+  nameEn            String
+  nameJa            String
+  descriptionEn     String?            @db.Text
+  descriptionJa     String?            @db.Text
+  isActive          Boolean            @default(true)
+  sortOrder         Int                @default(0)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  pricingRules      PricingRule[]
+  availabilitySlots AvailabilitySlot[]
+  bookings          Booking[]
+  calendarRules     CalendarRule[]
+
+  @@index([activityType])
+  @@index([isActive])
+}
+
+// ─── Pricing ─────────────────────────────────────────────────────────────────
+
+model PricingRule {
+  id              String          @id @default(cuid())
+  productId       String
+  product         Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  participantType ParticipantType
+  isAddon         Boolean         @default(false)
+  addonSlug       String?
+  priceJpy        Int
+  isBbq           Boolean         @default(false)
+  isActive        Boolean         @default(true)
+  validFrom       DateTime?
+  validUntil      DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([productId, participantType])
+  @@index([isActive])
+}
+
+// ─── Availability ─────────────────────────────────────────────────────────────
+
+model AvailabilitySlot {
+  id            String        @id @default(cuid())
+  productId     String
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  date          DateTime      @db.Date
+  startTime     String        // "09:00" | "11:30" | "13:30"
+  maxCapacity   Int           @default(21)
+  bookedCount   Int           @default(0)
+  status        SlotStatus    @default(OPEN)
+  isBlocked     Boolean       @default(false)
+  blockedReason String?
+  adminNote     String?       @db.Text
+  weatherNote   String?       @db.Text
+  condition     SlotCondition @default(OPTIMAL)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  bookings          Booking[]    @relation("PrimarySlotBookings")
+  secondaryBookings Booking[]    @relation("SecondarySlotBookings")
+  seatHolds         SeatHold[]
+
+  @@unique([productId, date, startTime])
+  @@index([productId, date])
+  @@index([date, isBlocked])
+  @@index([status])
+}
+
+// ─── Calendar Rules ────────────────────────────────────────────────────────────
+
+model CalendarRule {
+  id          String     @id @default(cuid())
+  productId   String
+  product     Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name        String
+  status      SlotStatus
+  startDate   DateTime   @db.Date
+  endDate     DateTime   @db.Date
+  daysOfWeek  Int[]
+  startTimes  String[]
+  maxCapacity Int?
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([productId, isActive])
+  @@index([startDate, endDate])
+}
+
+// ─── Promotions ───────────────────────────────────────────────────────────────
+
+model Promotion {
+  id            String        @id @default(cuid())
+  code          String        @unique
+  type          PromoType
+  category      PromoCategory @default(SEASONAL)
+  value         Int
+  maxUses       Int?
+  usedCount     Int           @default(0)
+  isActive      Boolean       @default(true)
+  validFrom     DateTime?
+  validUntil    DateTime?
+  productIds    String[]
+  descriptionEn String?
+  descriptionJa String?
+  discountType  DiscountType  @default(FLAT)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  bookings      Booking[]
+
+  @@index([code, isActive])
+  @@index([isActive])
+}
+
+// ─── Seat Holds ───────────────────────────────────────────────────────────────
+
+model SeatHold {
+  id          String           @id @default(cuid())
+  slotId      String
+  slot        AvailabilitySlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  bookingId   String?          @unique
+  paxCount    Int
+  expiresAt   DateTime
+  isReleased  Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  @@index([slotId, isReleased])
+  @@index([expiresAt])
+  @@index([bookingId])
+}
+
+// ─── Bookings ─────────────────────────────────────────────────────────────────
+
+model Booking {
+  id                    String           @id @default(cuid())
+  reference             String           @unique // e.g. "DA-240101-ABCD"
+
+  productId             String
+  product               Product          @relation(fields: [productId], references: [id])
+
+  // slotId is optional — null for combo bookings (flexible departure)
+  slotId                String?
+  slot                  AvailabilitySlot? @relation("PrimarySlotBookings", fields: [slotId], references: [id])
+
+  // secondarySlotId — Canyoning slot for Combo Package bookings
+  // Null until admin schedules the combo via the Combo Queue
+  secondarySlotId       String?
+  secondarySlot         AvailabilitySlot? @relation("SecondarySlotBookings", fields: [secondarySlotId], references: [id])
+
+  // Combo pack flag — true when booking covers both Rafting + Canyoning
+  isCombo               Boolean          @default(false)
+  // comboDate: the requested date for combo bookings (no fixed slot assigned)
+  comboDate             DateTime?        @db.Date
+
+  // Addons
+  hasBbq                Boolean          @default(false)
+
+  // Counts
+  adultCount            Int              @default(0)
+  childCount            Int              @default(0)
+
+  // Pricing snapshots
+  subtotalJpy           Int              @default(0)
+  discountJpy           Int              @default(0)
+  totalJpy              Int              @default(0)
+
+  // Promo snapshot
+  promotionId           String?
+  promotion             Promotion?       @relation(fields: [promotionId], references: [id])
+  promoCode             String?
+  promoType             String?
+  promoValue            Int?
+  promoDiscountJpy      Int?
+
+  // Status
+  status                BookingStatus    @default(PENDING)
+  // paymentStatus: String to support both "PAID" and "PENDING" cleanly
+  paymentStatus         String           @default("PENDING")
+
+  // Hold / checkout expiry
+  holdExpiresAt         DateTime?
+  holdId                String?
+
+  // Lead guest
+  leadName              String
+  leadEmail             String
+  leadPhone             String?
+  leadCountry           String?
+  leadLocale            String           @default("en")
+
+  // Source / meta
+  source                BookingSource    @default(WEB)
+  locale                String           @default("en")
+  userAgent             String?          @db.Text
+  ipAddress             String?
+
+  // Notes
+  customerNote          String?          @db.Text
+  adminNote             String?          @db.Text
+  specialRequest        String?          @db.Text
+
+  // Lifecycle timestamps
+  confirmedAt           DateTime?
+  completedAt           DateTime?
+  cancelledAt           DateTime?
+  cancelledBy           String?
+  cancellationReason    String?          @db.Text
+
+  // Consent flags
+  termsAccepted         Boolean          @default(false)
+  waiverAccepted        Boolean          @default(false)
+  cancellationPolicyAccepted Boolean     @default(false)
+  marketingConsent      Boolean          @default(false)
+  photoConsent          Boolean          @default(false)
+
+  // PDF storage (Supabase Storage)
+  receiptPdfPath        String?
+  waiverPdfPath         String?
+  receiptPdfGeneratedAt DateTime?
+  waiverPdfGeneratedAt  DateTime?
+
+  // Reminder deduplication
+  reminderSentAt        DateTime?
+
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  participants          BookingParticipant[]
+  payments              BookingPayment[]
+  messages              BookingMessage[]
+  auditLogs             AuditLog[]
+  notificationLogs      NotificationLog[]
+  bookingRequests       BookingRequest[]
+
+  @@index([reference])
+  @@index([leadEmail])
+  @@index([leadPhone])
+  @@index([slotId])
+  @@index([secondarySlotId])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([source])
+  @@index([createdAt])
+  @@index([holdExpiresAt])
+  @@index([reminderSentAt])
+  @@index([isCombo])
+}
+
+// ─── Booking Participants ──────────────────────────────────────────────────────
+
+model BookingParticipant {
+  id                    String          @id @default(cuid())
+  bookingId             String
+  booking               Booking         @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  participantType       ParticipantType
+  firstName             String
+  lastName              String?
+  age                   Int?
+
+  // Extended manifest
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  accommodation         String?
+  dietaryNotes          String?
+  swimmingConfidence    String?
+  medicalNotes          String?         @db.Text
+  specialRequest        String?         @db.Text
+
+  // Waiver
+  waiverAccepted        Boolean         @default(false)
+  waiverAcceptedAt      DateTime?
+
+  sortOrder             Int             @default(0)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  @@index([bookingId])
+}
+
+// ─── Booking Payments ─────────────────────────────────────────────────────────
+
+model BookingPayment {
+  id          String   @id @default(cuid())
+  bookingId   String
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  amountJpy   Int
+  refundedJpy Int      @default(0)
+  currency    String   @default("jpy")
+  method      String?  // "cash" | "bank_transfer" | "card"
+  // status: "PAID" | "PENDING" | "REFUNDED"
+  status      String   @default("PENDING")
+  paidAt      DateTime?
+  refundedAt  DateTime?
+  notes       String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([bookingId])
+}
+
+// ─── Booking Requests ─────────────────────────────────────────────────────────
+
+model BookingRequest {
+  id                  String               @id @default(cuid())
+  bookingId           String
+  booking             Booking              @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  type                BookingRequestType
+  status              BookingRequestStatus @default(PENDING_REVIEW)
+
+  requestedNewDate    String?
+  requestedNewTime    String?
+  requestedNewSlotId  String?
+
+  guestMessage        String?              @db.Text
+
+  suggestedRefundJpy  Int?
+  refundPolicyNote    String?              @db.Text
+
+  adminDecisionNote   String?              @db.Text
+  approvedAt          DateTime?
+  rejectedAt          DateTime?
+  finalizedAt         DateTime?
+  manualRefundId      String?              // manual ref for cash/bank refunds
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  @@index([bookingId])
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ─── Booking Messages ─────────────────────────────────────────────────────────
+
+model BookingMessage {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  authorName String
+  isAdmin   Boolean  @default(false)
+  channel   String   @default("internal")
+  subject   String?
+  body      String   @db.Text
+  sentAt    DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+// ─── Audit Logs ───────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id          String      @id @default(cuid())
+  bookingId   String?
+  booking     Booking?    @relation(fields: [bookingId], references: [id])
+  action      AuditAction
+  actorEmail  String
+  description String      @db.Text
+  before      String?     @db.Text
+  after       String?     @db.Text
+  ipAddress   String?
+  createdAt   DateTime    @default(now())
+
+  @@index([bookingId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// ─── Notification Logs ────────────────────────────────────────────────────────
+
+model NotificationLog {
+  id        String              @id @default(cuid())
+  bookingId String?
+  booking   Booking?            @relation(fields: [bookingId], references: [id])
+  event     NotificationEvent
+  channel   NotificationChannel
+  recipient String
+  subject   String?
+  body      String?             @db.Text
+  status    String              @default("sent")
+  errorMsg  String?
+  sentAt    DateTime            @default(now())
+
+  @@index([bookingId])
+  @@index([event])
+}
+
+// ─── Admin Users ──────────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  passwordHash String?
+  role         String    @default("admin")
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([email])
+}
+
+// ─── FAQ ──────────────────────────────────────────────────────────────────────
+
+model FaqItem {
+  id          String   @id @default(cuid())
+  category    String
+  questionEn  String
+  questionJa  String
+  answerEn    String   @db.Text
+  answerJa    String   @db.Text
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category, isPublished])
+}
+
+// ─── Testimonials ─────────────────────────────────────────────────────────────
+
+model Testimonial {
+  id            String        @id @default(cuid())
+  authorName    String
+  authorCountry String?
+  avatarUrl     String?
+  rating        Int           @default(5)
+  bodyEn        String        @db.Text
+  bodyJa        String?       @db.Text
+  activityType  ActivityType?
+  isPublished   Boolean       @default(true)
+  sortOrder     Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([isPublished])
+}
+
+// ─── Content Pages ────────────────────────────────────────────────────────────
+
+model ContentPage {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  titleEn     String
+  titleJa     String
+  bodyEn      String   @db.Text
+  bodyJa      String   @db.Text
+  metaDescEn  String?
+  metaDescJa  String?
+  isPublished Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug, isPublished])
+}
+
+// ─── Contact Submissions ──────────────────────────────────────────────────────
+
+model ContactSubmission {
+  id               String    @id @default(cuid())
+  name             String
+  email            String
+  phone            String?
+  subject          String?
+  message          String    @db.Text
+  locale           String    @default("en")
+  activityInterest String?
+  dateInterest     DateTime? @db.Date
+  paxCount         Int?
+
+  isRead    Boolean  @default(false)
+  isReplied Boolean  @default(false)
+  adminNote String?  @db.Text
+  bookingId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isRead])
+  @@index([isReplied])
+  @@index([createdAt])
+}
+
+// ─── System Settings ──────────────────────────────────────────────────────────
+
+model SystemSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+}

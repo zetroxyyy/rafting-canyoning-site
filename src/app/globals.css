@@ -1,0 +1,601 @@
+@import "tailwindcss";
+@source not "../../old_.md_files";
+@source not "../../docs";
+@source not "../../temp_documentation";
+@plugin "@tailwindcss/typography";
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────────── */
+@theme {
+  /* Teal palette */
+  --color-teal-50:  #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
+  --color-teal-800: #115e59;
+  --color-teal-900: #134e4a;
+  --color-teal-950: #042f2e;
+
+  /* Brand semantic */
+  --color-brand:        #0d9488;
+  --color-brand-dark:   #0f766e;
+  --color-brand-darker: #042f2e;
+  --color-surface:      #f0fdfa;
+  --color-border-light: #99f6e4;
+
+  /* Neutrals */
+  --color-stone-50:  #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-600: #57534e;
+  --color-stone-700: #44403c;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+  --color-stone-950: #0c0a09;
+
+  /* Typography */
+  --font-sans: "Poppins", "Noto Sans JP", system-ui, -apple-system, sans-serif;
+  --font-jp:   "Noto Sans JP", "Poppins", sans-serif;
+
+  /* Spacing */
+  --spacing-section:   5rem;
+  --spacing-container: 1.5rem;
+
+  /* Shadows — diffused and brand-tinted for premium feel */
+  --shadow-card:        0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-card-hover:  0 12px 36px -8px rgb(13 148 136 / 0.14), 0 4px 14px -4px rgb(0 0 0 / 0.06);
+  --shadow-elevated:    0 24px 48px -12px rgb(0 0 0 / 0.14);
+  --shadow-btn:         0 4px 14px 0 rgb(13 148 136 / 0.30);
+  --shadow-btn-lg:      0 6px 20px 0 rgb(13 148 136 / 0.36);
+
+  /* Radius */
+  --radius-card: 1rem;
+  --radius-btn:  0.75rem;
+
+  /* Animation */
+  --duration-fast:   150ms;
+  --duration-normal: 250ms;
+  --duration-slow:   400ms;
+  --ease-out-quad:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ─── Base Styles ────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+  color: var(--color-stone-900);
+  line-height: 1.6;
+}
+
+:lang(ja) body,
+:lang(ja) {
+  font-family: var(--font-jp);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Typography Scale ───────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Layout Utilities ───────────────────────────────────────────────────────── */
+.container-site {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-site {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-site {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.section {
+  padding-top: var(--spacing-section);
+  padding-bottom: var(--spacing-section);
+}
+
+/* ─── Card Component ─────────────────────────────────────────────────────────── */
+/*
+  Premium card:
+  – Very soft teal-tinted border (8% alpha), upgraded to 14% on hover
+  – Diffused, brand-tinted hover shadow bloom
+  – 3px lift on hover for depth
+  – Generous default padding via p-6 utilities in markup
+*/
+.card {
+  background: #ffffff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(13, 148, 136, 0.08);
+  transition:
+    box-shadow    var(--duration-normal) var(--ease-out-quad),
+    transform     var(--duration-normal) var(--ease-out-quad),
+    border-color  var(--duration-normal) var(--ease-out-quad);
+}
+
+.card:hover {
+  box-shadow:   var(--shadow-card-hover);
+  transform:    translateY(-3px);
+  border-color: rgba(13, 148, 136, 0.14);
+}
+
+/* ─── Button Styles ──────────────────────────────────────────────────────────── */
+/*
+  All buttons:
+  – translateY(-2px) hover lift with brand-tinted shadow bloom
+  – translateY(0) snap-back on active press
+  – Smooth 200ms transition on all properties
+*/
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-btn);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 200ms var(--ease-out-quad);
+  white-space: nowrap;
+  position: relative;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Primary */
+.btn-primary {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: white;
+  box-shadow: 0 1px 3px 0 rgb(13 148 136 / 0.25);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px 0 rgb(13 148 136 / 0.2);
+}
+
+/* Outline */
+.btn-outline {
+  background: transparent;
+  color: var(--color-teal-700);
+  border: 2px solid rgba(13, 148, 136, 0.5);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background:    var(--color-teal-50);
+  border-color:  var(--color-teal-600);
+  transform:     translateY(-1px);
+  box-shadow:    0 4px 12px 0 rgb(13 148 136 / 0.12);
+}
+
+.btn-outline:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Ghost */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-stone-600);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-stone-100);
+  color: var(--color-stone-900);
+}
+
+/* Sizes */
+.btn-sm {
+  padding: 0.5rem 1.125rem;
+  font-size: 0.875rem;
+  border-radius: 0.625rem;
+}
+
+.btn-lg {
+  padding: 1rem 2.25rem;
+  font-size: 1.0625rem;
+  border-radius: 0.875rem;
+}
+
+/* ─── Form Elements ──────────────────────────────────────────────────────────── */
+/*
+  Generous padding, smooth transitions, brand-tinted focus ring.
+  Error state uses red-400 ring for clear visual feedback.
+*/
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 0.625rem;
+  background: white;
+  font-size: 0.9375rem;
+  color: var(--color-stone-900);
+  transition:
+    border-color var(--duration-fast) var(--ease-out-quad),
+    box-shadow   var(--duration-fast) var(--ease-out-quad);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-stone-400);
+}
+
+.input:hover:not(:focus) {
+  border-color: rgba(13, 148, 136, 0.35);
+}
+
+.input:focus {
+  border-color: var(--color-teal-500);
+  box-shadow: 0 0 0 3px rgb(13 148 136 / 0.12);
+}
+
+.input.error {
+  border-color: #f87171;
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 0.10);
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-stone-700);
+  margin-bottom: 0.375rem;
+}
+
+.field-error {
+  font-size: 0.8125rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+}
+
+/* ─── Badge Styles ───────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.badge-teal  { background: var(--color-teal-100);  color: var(--color-teal-800); border: 1px solid rgba(13,148,136,0.15); }
+.badge-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.badge-amber { background: #fef9c3; color: #92400e; border: 1px solid #fde68a; }
+.badge-red   { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.badge-gray  { background: var(--color-stone-100);  color: var(--color-stone-600); border: 1px solid var(--color-stone-200); }
+.badge-blue  { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+/* ─── Status Badge Mapping ──────────────────────────────────────────────────── */
+.status-PENDING {
+  display: inline-flex; align-items: center; padding: 0.2rem 0.625rem;
+  border-radius: 9999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+  background: #fef9c3; color: #92400e; border: 1px solid #fde68a;
+}
+.status-CONFIRMED {
+  display: inline-flex; align-items: center; padding: 0.2rem 0.625rem;
+  border-radius: 9999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+  background: var(--color-teal-100); color: var(--color-teal-800); border: 1px solid rgba(13,148,136,0.2);
+}
+.status-CASH_DUE {
+  display: inline-flex; align-items: center; padding: 0.2rem 0.625rem;
+  border-radius: 9999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+  background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;
+}
+.status-PAID {
+  display: inline-flex; align-items: center; padding: 0.2rem 0.625rem;
+  border-radius: 9999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+  background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;
+}
+.status-COMPLETED {
+  display: inline-flex; align-items: center; padding: 0.2rem 0.625rem;
+  border-radius: 9999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+  background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;
+}
+.status-CANCELLED {
+  display: inline-flex; align-items: center; padding: 0.2rem 0.625rem;
+  border-radius: 9999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+  background: #fee2e2; color: #991b1b; border: 1px solid #fecaca;
+}
+
+/* ─── Hero Gradient ──────────────────────────────────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(
+    160deg,
+    var(--color-teal-950) 0%,
+    var(--color-teal-900) 40%,
+    var(--color-teal-700) 100%
+  );
+}
+
+/* ─── Section Label ──────────────────────────────────────────────────────────── */
+.section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-teal-600);
+  margin-bottom: 0.75rem;
+}
+
+/* ─── Loading Spinner ────────────────────────────────────────────────────────── */
+.spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-teal-200);
+  border-top-color: var(--color-teal-600);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Skeleton Loader ────────────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #f5f5f4 25%, #e7e5e4 50%, #f5f5f4 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+@keyframes shimmer {
+  0%   { background-position:  200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Step Indicator ─────────────────────────────────────────────────────────── */
+.step-active   { color: var(--color-teal-700); font-weight: 600; }
+.step-done     { color: var(--color-teal-500); }
+.step-upcoming { color: var(--color-stone-400); }
+
+/* ─── Focus Ring ─────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px rgb(20 184 166 / 0.50); /* teal-500 at 50% */
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--color-stone-200); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-teal-400); }
+
+/* ─── Admin Table ────────────────────────────────────────────────────────────── */
+/*
+  Enterprise-polish upgrade:
+  – Generous th/td padding (1rem / 1.125rem) for breathing room
+  – Table header: subtle teal-50 background with uppercase tracking
+  – Hover row: teal-50/80 tint for easy horizontal data tracking
+  – overflow-x-auto on wrapper prevents mobile viewport overflow
+  – Last row: no double border with card boundary
+*/
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.admin-table thead tr {
+  border-bottom: 1.5px solid rgba(13, 148, 136, 0.10);
+  background: rgba(240, 253, 250, 0.7);
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-stone-400);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  color: var(--color-stone-700);
+  vertical-align: middle;
+  transition: background var(--duration-fast);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover td {
+  background: rgba(240, 253, 250, 0.85);
+}
+
+/* ─── Activity Card — Public-facing hover micro-interactions ─────────────────── */
+/*
+  Premium lift: cards on the homepage / activity pages get a subtle
+  3px translateY lift plus a teal-tinted shadow bloom on hover.
+  The transition is all-property for butter-smooth feel.
+*/
+
+/* ─── Combo Pack Highlight ───────────────────────────────────────────────────── */
+/*
+  Ensures the Combo Pack section on the homepage and in the booking wizard
+  always renders as a prominent, visually distinct premium element.
+  Used together with the inline gradient style already on the element.
+*/
+.combo-pack-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 250ms var(--ease-out-quad), box-shadow 250ms var(--ease-out-quad);
+}
+
+.combo-pack-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px -8px rgb(13 148 136 / 0.28), 0 8px 16px -4px rgb(0 0 0 / 0.08);
+}
+
+/* ─── Admin Sidebar — Active Nav Item ────────────────────────────────────────── */
+/*
+  The active sidebar nav item uses a highly distinct teal-50 background
+  with a bold 4px left accent border and teal text.
+  Matches the AdminSidebar.tsx implementation with inline styles.
+*/
+
+/* ─── Mobile Overflow Safety ─────────────────────────────────────────────────── */
+/*
+  Prevents any table-containing wrapper from causing horizontal scroll
+  on the entire page. The inner table scrolls independently.
+*/
+.overflow-x-safe {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Prevent scroll from propagating to the page body on touch devices */
+  overscroll-behavior-x: contain;
+}
+
+/* ─── Z-index Stack ──────────────────────────────────────────────────────────── */
+/*
+  Establishes the canonical z-index layer cake to prevent z-index collisions.
+  – Header:    z-50  (sticky top, always above content)
+  – Modals:    z-50  (overlays, use backdrop)
+  – Dropdowns: z-40  (below modals, above page content)
+  – Tooltips:  z-30
+  – Content:   z-0
+  All header / modal elements should use z-50 / z-40 explicitly in Tailwind classes.
+*/
+
+/* ─── Booking Wizard Card ────────────────────────────────────────────────────── */
+/*
+  The booking wizard wrapper gets a generous max-width and shadow
+  to give it a "floating form" feel that lifts it off the background.
+*/
+.wizard-card {
+  background: white;
+  border-radius: 1.25rem;
+  box-shadow:
+    0 4px 24px -4px rgb(0 0 0 / 0.08),
+    0 1px 4px -1px rgb(0 0 0 / 0.04);
+  border: 1px solid rgba(13, 148, 136, 0.08);
+}
+
+/* ─── Utility ────────────────────────────────────────────────────────────────── */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ─── Print Media Styles ──────────────────────────────────────────────────────── */
+@media print {
+  /* Hide the admin sidebar, top navigation, print buttons, filters, etc. */
+  .print\:hidden,
+  header,
+  aside,
+  nav,
+  button,
+  .btn,
+  a[href^="/admin?range="],
+  #pdf-generate-en,
+  #pdf-generate-ja,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Force background colors to be white/transparent to save ink */
+  body,
+  main,
+  html,
+  .card,
+  table,
+  tr,
+  td,
+  th {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border-color: #cbd5e1 !important; /* light gray borders for structure */
+  }
+
+  /* Make sure container expands to full width */
+  main,
+  .max-w-7xl,
+  .max-w-5xl,
+  .card,
+  .table-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+  }
+
+  /* Table styling */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  th, td {
+    padding: 8px 12px !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+  }
+
+  /* Keep text size readable but compact */
+  h2, h3 {
+    color: #000000 !important;
+    page-break-after: avoid;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+}

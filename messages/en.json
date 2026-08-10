@@ -1,0 +1,325 @@
+{
+  "nav": {
+    "home": "Home",
+    "rafting": "Rafting",
+    "canyoning": "Canyoning",
+    "booking": "Book Now",
+    "about": "About",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "access": "Access",
+    "manage": "My Booking"
+  },
+  "hero": {
+    "badge": "Numata, Gunma, Japan",
+    "headline": "Gunma Rafting & Outdoor Activities on the Tone River",
+    "sub": "World-class river rafting and canyoning in the heart of Gunma Prefecture.",
+    "cta_book": "Book Your Adventure",
+    "cta_learn": "Learn More",
+    "quick_answer": "Dream Adventure is an outdoor tour operator based on the Tone River in Numata, Gunma, Japan, running whitewater rafting and canyoning trips. Rafting is open from age 6 and canyoning from age 12. A full-day combo of both is ¥10,000 for adults. The base is about two hours by car from central Tokyo, with free parking, and operates from April to October."
+  },
+  "activities": {
+    "title": "Choose Your Adventure",
+    "rafting_name": "River Rafting",
+    "rafting_desc": "Navigate the powerful Tone River on a guided group raft. Suitable from age 6.",
+    "canyoning_name": "Canyoning",
+    "canyoning_desc": "Descend waterfalls, slide natural chutes, and explore hidden gorges. Ages 12+.",
+    "book_btn": "Book Now",
+    "details_btn": "See Details"
+  },
+  "pricing": {
+    "adult": "Adult",
+    "child": "Child",
+    "per_person": "per person",
+    "tax_included": "Tax included",
+    "bbq_note": "BBQ is pay-on-arrival and is not included in the online total."
+  },
+  "schedule": {
+    "title": "Daily Departures",
+    "times": [
+      "9:00 AM",
+      "11:30 AM",
+      "1:30 PM"
+    ],
+    "note": "Three daily departures — our team will confirm your exact time when we call."
+  },
+  "safety": {
+    "title": "Safety First",
+    "intro": "Your safety is our absolute priority. All activities are led by thoroughly trained professional guides.",
+    "items": [
+      "Experienced professional guides on every tour",
+      "All equipment provided and inspected daily",
+      "Guides trained in water rescue and first aid",
+      "Weather and river level monitoring",
+      "Full safety briefing before every departure"
+    ]
+  },
+  "booking": {
+    "title": "Book Your Experience",
+    "steps": {
+      "activity": "Activity",
+      "date": "Date",
+      "time": "Time",
+      "people": "People",
+      "details": "Details",
+      "payment": "Confirm"
+    },
+    "activity": {
+      "choose": "Choose an Activity",
+      "rafting": "River Rafting",
+      "canyoning": "Canyoning",
+      "bbq_addon": "Add BBQ",
+      "bbq_addon_desc": "Riverside BBQ after your adventure. Pay on arrival."
+    },
+    "date": {
+      "choose": "Choose a Date",
+      "available": "Available",
+      "limited": "Limited",
+      "full": "Full",
+      "blocked": "Unavailable"
+    },
+    "time": {
+      "choose": "Choose a Departure Time",
+      "spots_left": "{count} spots remaining"
+    },
+    "people": {
+      "title": "Number of Participants",
+      "adults": "Adults",
+      "adult_age": "Age 18+",
+      "children": "Children",
+      "child_age_rafting": "Age 6–17",
+      "child_age_canyoning": "Age 12–17",
+      "min_adults": "At least 1 adult required",
+      "bbq_addon": "Add BBQ",
+      "bbq_addon_desc": "Riverside BBQ after your activity. Pay on arrival."
+    },
+    "details": {
+      "title": "Your Details",
+      "lead_name": "Lead Booker Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "country": "Country",
+      "participants": "Participant Information",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "age": "Age",
+      "waiver": "Safety Waiver",
+      "waiver_text": "I confirm that this participant is in good health and understands the risks involved in this activity.",
+      "waiver_required": "Waiver must be accepted for each participant",
+      "notes": "Additional Notes",
+      "notes_placeholder": "Allergies, special requirements, questions for the guide..."
+    },
+    "payment": {
+      "title": "Confirm Your Request",
+      "summary": "Booking Summary",
+      "promo": "Promo Code",
+      "promo_apply": "Apply",
+      "promo_valid": "Promo applied!",
+      "promo_invalid": "Invalid or expired promo code",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "bbq_excluded": "BBQ (pay on arrival)",
+      "pay_btn": "Submit Booking Request",
+      "terms_agree": "By submitting this request you agree to our Terms & Conditions and Cancellation Policy."
+    },
+    "confirmation": {
+      "title": "Request Received!",
+      "reference": "Your Booking Reference",
+      "email_sent": "A confirmation email has been sent to {email}",
+      "manage": "Manage My Booking"
+    },
+    "errors": {
+      "no_availability": "Sorry, this slot is no longer available.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "categories": {
+      "booking": "Booking",
+      "safety": "Safety",
+      "weather": "Weather",
+      "access": "Getting Here",
+      "payment": "Payment",
+      "bbq": "BBQ",
+      "cancellation": "Cancellation",
+      "eligibility": "Who Can Join"
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Questions? We're happy to help.",
+    "line": "Message us on LINE",
+    "line_note": "Fastest response for Japanese speakers",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "form": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "phone": "Phone (optional)",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message",
+      "success": "Message sent! We'll be in touch soon.",
+      "error": "Something went wrong. Please try again."
+    }
+  },
+  "access": {
+    "title": "Getting to Our Gunma Base",
+    "intro": "We're located in Numata, Gunma Prefecture — 17 minutes by car from Numata Station.",
+    "by_train": "By Train",
+    "by_car": "By Car",
+    "map": "View on Google Maps",
+    "meeting_point": "Meeting Point",
+    "transfer_note": "Reception and meeting point is in Nakahotchimachi, Numata. After check-in, it is roughly a 22-minute transfer to the Tone River put-in point where rafting begins."
+  },
+  "about": {
+    "title": "About Dream Adventure",
+    "intro": "A fresh, exciting new adventure company born in Numata, Gunma.",
+    "mission": "Our mission is to deliver outstanding outdoor experiences with an unwavering commitment to safety and joy."
+  },
+  "manage": {
+    "title": "Manage My Booking",
+    "lookup": "Enter your booking reference and email to find your booking.",
+    "reference": "Booking Reference",
+    "email": "Email Address",
+    "find": "Find Booking",
+    "not_found": "Booking not found. Check your reference and email.",
+    "status": "Status",
+    "cancel": "Request Cancellation",
+    "reschedule": "Request Reschedule"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "nav": {
+      "bookings": "Bookings",
+      "availability": "Availability",
+      "promotions": "Promotions",
+      "contacts": "Contacts",
+      "settings": "Settings"
+    },
+    "bookings": {
+      "title": "All Bookings",
+      "export": "Export CSV",
+      "columns": {
+        "reference": "Reference",
+        "name": "Name",
+        "activity": "Activity",
+        "date": "Date",
+        "time": "Time",
+        "people": "Pax",
+        "total": "Total",
+        "status": "Status",
+        "payment": "Payment",
+        "created": "Booked"
+      }
+    },
+    "status": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "CASH_DUE": "Cash Due",
+      "PAID": "Paid",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "payment_status": {
+      "UNPAID": "Unpaid",
+      "PENDING": "Pending",
+      "PAID": "Paid",
+      "REFUNDED": "Refunded",
+      "FAILED": "Failed"
+    }
+  },
+  "footer": {
+    "tagline": "Adventure Awaits",
+    "location": "Numata, Gunma, Japan",
+    "links": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "contact": "Contact"
+    },
+    "lang_switch": "日本語"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "close": "Close",
+    "required": "Required",
+    "optional": "Optional",
+    "jpy": "¥{amount}",
+    "per_person": "/ person"
+  },
+  "rafting": {
+    "title": "River Rafting",
+    "hero_headline": "Tone River Japan: Gunma Rafting Adventures",
+    "season_title": "Best Season for Tone River Rafting",
+    "season_desc": "Rafting on the Tone River in Gunma runs from April through October. The spring snowmelt (April–June) offers extreme Grade 4 white water, while the summer and autumn months (July–October) provide calmer, scenic waters perfect for families and first-timers.",
+    "access_title": "Access to Our Gunma Base",
+    "access_desc": "17 minutes by car from Numata Station. Free parking available at our base.",
+    "meta_desc": "Experience river rafting on the Tone River in Gunma, Japan. 17 minutes from Numata Station. Book your adventure today.",
+    "hero_sub": "Ride the Tone River with expert guides. Suitable for beginners to experienced paddlers.",
+    "age_rule": "Ages 6 and up. Children aged 6–17 qualify for the child rate.",
+    "what_included": "What's Included",
+    "included_items": [
+      "Experienced professional guide",
+      "All safety equipment (wetsuit, helmet, life jacket, paddle)",
+      "Pre-trip safety briefing",
+      "Changing facilities",
+      "Towels and warm shower"
+    ],
+    "quick_answer": "Dream Adventure runs guided whitewater rafting on the Tone River in Numata, Gunma, about two hours from central Tokyo. Departures are at 9:00, 11:30, and 13:30, and trips are open to ages 6 and up. Adult ¥6,000, child ¥4,000, including life jacket and helmet rental, a guide in every boat, and free parking."
+  },
+  "canyoning": {
+    "title": "Canyoning",
+    "meta_desc": "Explore hidden gorges, natural waterslides, and dramatic waterfalls in Gunma. Book canyoning today.",
+    "hero_sub": "Descend through pristine mountain canyons with our expert guides.",
+    "age_rule": "Ages 12 and up. Participants aged 12–17 qualify for the child rate.",
+    "what_included": "What's Included",
+    "included_items": [
+      "Experienced professional guide",
+      "Full wetsuit, helmet, harness, and water shoes",
+      "Pre-trip safety briefing",
+      "Changing facilities",
+      "Towels and warm shower"
+    ],
+    "quick_answer": "Dream Adventure runs guided canyoning trips in the valleys around Numata, Gunma. Descents include natural rock slides, waterfall jumps, and swimming through canyon pools. Trips are open to ages 12 and up. Adult ¥6,000, child ¥4,000, including equipment rental and a guide on every descent."
+  },
+  "geo_faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "q": "Where can I go whitewater rafting near Tokyo?",
+        "a": "Dream Adventure runs whitewater rafting on the Tone River in Numata, Gunma, about two hours by car from central Tokyo. The Tone is one of the Kanto region's main whitewater rivers, running from the spring snowmelt through autumn. Departures are at 9:00, 11:30, and 13:30, and there is free parking at the base."
+      },
+      {
+        "q": "What is the minimum age for rafting in Japan?",
+        "a": "At Dream Adventure, rafting is open from age 6 and canyoning from age 12. Children aged 6 to 12 pay the child rate of ¥4,000 for rafting. A guide rides in every boat and adjusts the route to the day's water level, so the trip works for families and first-time paddlers."
+      },
+      {
+        "q": "Can I do rafting and canyoning on the same day in Japan?",
+        "a": "Yes. Dream Adventure offers a full-day combo of rafting and canyoning for ¥10,000 for adults and ¥6,000 for children, which costs less than booking the two separately. Because canyoning has a minimum age of 12, the combo is open to ages 12 and up."
+      },
+      {
+        "q": "When is the best season for rafting in Japan?",
+        "a": "Dream Adventure operates from April to October. April through June has the highest water from snowmelt and the strongest rapids; July and August have warmer water that suits families with children; September and October are calmer, with autumn colours through the valley."
+      },
+      {
+        "q": "How much does rafting cost in Gunma, Japan?",
+        "a": "At Dream Adventure, rafting is ¥6,000 for adults and ¥4,000 for children, and canyoning is the same. A full-day combo of both is ¥10,000 for adults and ¥6,000 for children. All prices include equipment rental and a guide. A riverside BBQ can be added and is paid on site."
+      },
+      {
+        "q": "What should I bring for a rafting trip in Japan?",
+        "a": "Please bring a swimsuit, a towel, and a change of clothes. Life jackets, helmets, and wetsuits are fully included in the tour price, so you do not need to bring your own specialized equipment. For footwear, please bring water-friendly shoes or old sneakers that you do not mind getting wet. For your own security, please do not bring valuable items or wear them during the activity, as they can easily be lost in the river."
+      },
+      {
+        "q": "Do the guides speak English?",
+        "a": "Yes, we have English-speaking guides available to ensure you have a safe and thrilling experience on the river. All of our guides are also fully trained in water rescue and first aid. To guarantee we can assign an English-speaking guide to your specific tour, please let us know your language preference when you make your booking."
+      }
+    ]
+  }
+}
