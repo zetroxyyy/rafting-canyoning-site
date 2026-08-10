@@ -27,7 +27,7 @@
     "@react-pdf/renderer": "^4.5.1",
     "@stripe/stripe-js": "^9.2.0",
     "@supabase/supabase-js": "^2.104.1",
-    "@types/bcryptjs": "^2.4.6",
+    "@types/bcryptjs": "^3.0.0",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
